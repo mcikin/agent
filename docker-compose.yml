@@ -1,0 +1,57 @@
+version: "3.9"
+
+services:
+  agent:
+    user: "${UID}:${GID}"
+    image: mcikin/agent:dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app
+    volumes:
+      - .:/app
+      - ./sessions:/tmp/aider-sessions  # Use local directory instead of /tmp
+    env_file:
+      - .env
+    environment:
+      # If you prefer forcing these at runtime, you can set them here too.
+      # Compose will still read .env automatically, but env_file makes it explicit.
+      # OpenAI-compatible for OpenRouter:
+      OPENAI_API_BASE: ${OPENAI_API_BASE}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      AIDER_OPENAI_API_BASE: ${AIDER_OPENAI_API_BASE}
+      AIDER_OPENAI_API_KEY: ${AIDER_OPENAI_API_KEY}
+      AIDER_MODEL: ${AIDER_MODEL}
+
+      # Optional: disable Playwright inside container (reduce surface)
+      AIDER_DISABLE_PLAYWRIGHT: ${AIDER_DISABLE_PLAYWRIGHT}
+
+      # OpenRouter-specific (helpful if your server wrapper forwards these headers)
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
+      OPENROUTER_REFERER: ${OPENROUTER_REFERER}
+      OPENROUTER_X_TITLE: ${OPENROUTER_X_TITLE}
+
+      # Supabase auth/config (use service role only on server; never in client apps)
+      SUPABASE_URL: ${SUPABASE_URL}
+      SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
+      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY}
+      SUPABASE_JWT_SECRET: ${SUPABASE_JWT_SECRET}
+      SUPABASE_JWT_ALGO: ${SUPABASE_JWT_ALGO}
+      SUPABASE_JWT_AUDIENCE: ${SUPABASE_JWT_AUDIENCE}
+      SUPABASE_PROJECT_REF: ${SUPABASE_PROJECT_REF}
+      SUPABASE_REDIRECT_URL: ${SUPABASE_REDIRECT_URL}
+      SUPABASE_JWKS_URL: ${SUPABASE_JWKS_URL}
+      
+      # Supabase bucket for code files
+      SUPABASE_BUCKET: ${SUPABASE_BUCKET:-code-files}
+      
+      # Server configuration
+      PORT: 5005
+      AIDER_WORK_DIR: /tmp/aider-sessions
+
+    ports:
+      - "5005:5005"  # Expose the HTTP API server
+    stdin_open: true
+    tty: true
+    # Run the HTTP server instead of the CLI
+    command: ["python", "/app/server/main.py"]

@@ -1,0 +1,30 @@
+[project]
+name = "aider-worker"
+version = "0.1.0"
+description = "FastAPI worker service for Aider"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.24",
+    "pydantic>=2.0",
+    "python-dotenv>=1.0",
+    "httpx>=0.27",
+    "supabase>=2.0.0",
+    "gitpython>=3.1",
+]
+
+[project.scripts]
+dev = "uvicorn:main"
+
+[tool.uvicorn]
+app = "app.main:app"
+host = "0.0.0.0"
+port = 8000
+reload = true
+
+
+
+
+
+
+

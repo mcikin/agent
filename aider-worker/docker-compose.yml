@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  aider-worker:
+    build: .
+    image: aider-worker:dev
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    volumes:
+      - aider_workdir:/srv/aider
+      - ./.env:/app/.env:ro
+volumes:
+  aider_workdir:
+
+

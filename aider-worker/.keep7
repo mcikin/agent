@@ -1,0 +1,13 @@
+from typing import List
+
+
+def run_aider(messages: List[dict], model: str) -> str:
+    # Placeholder for invoking aider; implement later
+    return "aider: ok"
+
+
+
+
+
+
+

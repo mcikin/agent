@@ -1,0 +1,16 @@
+# Environment example for aider-worker
+
+# Supabase
+SUPABASE_URL=
+SUPABASE_SERVICE_ROLE_KEY=
+SUPABASE_JWKS_URL=        # e.g. https://<project-ref>.supabase.co/auth/v1/jwks
+SUPABASE_BUCKET=rafmer-code
+
+# Worker paths
+WORKDIR=/srv/aider
+AIDER_BIN=/usr/local/bin/aider   # point to my fork in PATH
+
+# Server
+PORT=8000
+
+

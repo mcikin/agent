@@ -1,0 +1,56 @@
+# ===========================================
+# AIDER HTTP SERVER CONFIGURATION
+# ===========================================
+
+# === SUPABASE CONFIGURATION ===
+# Required for file storage - get these from your Supabase dashboard
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-here
+SUPABASE_BUCKET=code-files
+
+# Optional Supabase settings (for advanced auth/JWT)
+SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_JWT_SECRET=your-jwt-secret
+SUPABASE_JWT_ALGO=HS256
+SUPABASE_JWT_AUDIENCE=authenticated
+SUPABASE_PROJECT_REF=your-project-ref
+SUPABASE_REDIRECT_URL=http://localhost:3000
+SUPABASE_JWKS_URL=https://your-project.supabase.co/.well-known/jwks.json
+
+# === LLM CONFIGURATION ===
+# DEFAULT: OpenRouter (for easy testing)
+AIDER_OPENAI_API_BASE=https://openrouter.ai/api/v1
+AIDER_OPENAI_API_KEY=sk-or-your-openrouter-key-here
+AIDER_MODEL=openrouter/qwen/qwq-32b
+
+# === ALTERNATIVE: SELF-HOSTED LLM OPTIONS ===
+# Uncomment ONE of these sections to use self-hosted instead of OpenRouter
+
+# For Ollama (default port 11434)
+# AIDER_OPENAI_API_BASE=http://localhost:11434/v1
+# AIDER_OPENAI_API_KEY=dummy-key
+# AIDER_MODEL=llama3.2:latest
+
+# For LM Studio (default port 1234) 
+# AIDER_OPENAI_API_BASE=http://localhost:1234/v1
+# AIDER_OPENAI_API_KEY=dummy-key
+# AIDER_MODEL=your-local-model-name
+
+# For other OpenAI-compatible endpoints
+# AIDER_OPENAI_API_BASE=http://your-llm-server:port/v1
+# AIDER_OPENAI_API_KEY=your-api-key-if-needed
+# AIDER_MODEL=your-model-name
+
+# === SERVER CONFIGURATION ===
+PORT=5005
+AIDER_WORK_DIR=/tmp/aider-sessions
+
+# === AIDER SETTINGS ===
+AIDER_DISABLE_PLAYWRIGHT=true
+AIDER_AUTO_COMMITS=true
+AIDER_STREAM=true
+AIDER_PRETTY=false
+
+# === DOCKER USER (for file permissions) ===
+UID=1000
+GID=1000 

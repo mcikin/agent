@@ -1,0 +1,23 @@
+from pathlib import Path
+from typing import Optional
+import shutil
+
+
+class RepoManager:
+    def __init__(self, workdir: Path):
+        self.workdir = workdir
+        self.workdir.mkdir(parents=True, exist_ok=True)
+
+    def ensure_clean_dir(self, name: str) -> Path:
+        path = self.workdir / name
+        if path.exists():
+            shutil.rmtree(path)
+        path.mkdir(parents=True)
+        return path
+
+
+
+
+
+
+

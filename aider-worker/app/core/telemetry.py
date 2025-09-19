@@ -1,0 +1,50 @@
+import json
+import logging
+import os
+from datetime import datetime, timezone
+from typing import Any, Dict
+
+
+class JsonLineFormatter(logging.Formatter):
+    def format(self, record: logging.LogRecord) -> str:
+        payload: Dict[str, Any] = {
+            "ts": datetime.now(timezone.utc).isoformat(),
+            "level": record.levelname,
+            "logger": record.name,
+            "message": record.getMessage(),
+        }
+        extra = getattr(record, "extra", None)
+        if isinstance(extra, dict):
+            payload.update(extra)
+        return json.dumps(payload, ensure_ascii=False)
+
+
+def configure_logging() -> logging.Logger:
+    logger_name = os.getenv("LOGGER_NAME", "aider-worker")
+    level = os.getenv("LOG_LEVEL", "INFO").upper()
+
+    logger = logging.getLogger(logger_name)
+    logger.setLevel(level)
+    logger.propagate = False
+
+    # Clear handlers to avoid duplicates on reload
+    logger.handlers.clear()
+
+    handler = logging.StreamHandler()
+    handler.setFormatter(JsonLineFormatter())
+    logger.addHandler(handler)
+    return logger
+
+
+_logger = configure_logging()
+
+
+def log_event(event: str, **kwargs):
+    _logger.info(event, extra={"extra": kwargs})
+
+
+
+
+
+
+

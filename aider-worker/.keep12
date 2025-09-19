@@ -1,0 +1,32 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY pyproject.toml /app/
+RUN pip install --no-cache-dir uvicorn[standard]
+RUN pip install --no-cache-dir -r <(python - <<'PY'
+print('\n'.join([
+    'fastapi>=0.110',
+    'uvicorn[standard]>=0.24',
+    'pydantic>=2.0',
+    'python-dotenv>=1.0',
+    'httpx>=0.27',
+    'supabase>=2.0.0',
+    'gitpython>=3.1',
+]))
+PY
+)
+
+COPY app /app/app
+
+ENV PORT=8000
+EXPOSE 8000
+
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+
+
+
+
+
+
