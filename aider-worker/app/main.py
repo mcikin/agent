@@ -12,6 +12,7 @@ import httpx
 from fastapi import Depends, FastAPI, Header, HTTPException, Path, Query, WebSocket
 from fastapi.responses import PlainTextResponse
 from dotenv import load_dotenv
+from fastapi.middleware.cors import CORSMiddleware
 
 # Load environment variables from .env file
 load_dotenv()
@@ -97,6 +98,14 @@ class ProgressTracker:
 
 configure_logging()
 app = FastAPI(title="aider-worker", version="0.1.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],        # or use allow_origin_regex=".*"
+    allow_methods=["*"],
+    allow_headers=["*"],
+    allow_credentials=False,    # must be False when allow_origins=["*"]
+)
 
 
 def get_llm_client():
